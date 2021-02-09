@@ -7,6 +7,9 @@ from pydantic import BaseModel
 import mimetypes
 
 from app.model.template import Car, CarFactory, CarManufacturer
+from app.model.template import PredictionModel
+from sklearn.datasets import load_iris
+from sklearn.tree import DecisionTreeClassifier
 
 app = FastAPI(
     title="App deployment as a microservice",
@@ -24,6 +27,15 @@ class ResponseCar(BaseModel):
     mileage: int
     owner: Optional[str]
 
+class User(BaseModel):
+    username: str
+    full_name: Optional[str] = None
+
+class Flower(BaseModel):
+    sepal_length: float
+    sepal_width: float
+    petal_length: float
+    petal_width: float
 
 @app.get("/cars/", response_model=List[ResponseCar])
 def get_cars() -> List[ResponseCar]:
@@ -58,6 +70,26 @@ def build_cars(
 
     return response_cars
 
+@app.post("/xcars/", response_model=List[ResponseCar])
+def get_xcars(user: User, x: int = Body(default=2)) -> List[ResponseCar]:
+    """
+    Get a list of x cars of Ford
+    """
+    car = Car(brand="Ford", mileage=100_000)
+    cars = [car]*x
+    print(user.username, user.full_name)
+
+    response_cars = [ResponseCar(brand=car.brand, mileage=car.mileage) for car in cars]
+
+    return response_cars
+
+
+@app.post("/predict/", response_model=str)
+def predict_model(flower: Flower = Body(...)) -> str:
+        est = PredictionModel(model=DecisionTreeClassifier(min_samples_leaf=3, random_state=0), data_loader=load_iris)
+        est.get_data()
+        est.fit(est.X, est.y)
+        return est.predict([[flower.sepal_length, flower.sepal_width, flower.petal_length, flower.petal_width]])
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="127.0.0.1", port=5000, log_level="info", reload=True)

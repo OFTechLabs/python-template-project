@@ -26,3 +26,34 @@ class CarManufacturer(object):
         for factory in self.factories:
             cars.extend(factory.construct_cars())
         return cars
+
+
+class PredictionModel(object):
+    def __init__(self, model, data_loader):
+        self.model = model
+        self.X = None
+        self.y = None
+        self.data_loader = data_loader
+        self.feature_names = None
+        self.target_names = None
+
+    def get_data(self):
+        """
+        """
+        data = self.data_loader()
+        self.X = data.data
+        self.y = data.target
+        self.feature_names = data.feature_names
+        self.target_names = data.target_names
+
+
+    def fit(self, X_train, y_train):
+        """
+        """
+        self.model.fit(X_train, y_train)
+        return
+
+    def predict(self, X):
+        """
+        """
+        return self.target_names[self.model.predict(X)[0]]
