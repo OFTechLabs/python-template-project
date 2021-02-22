@@ -17,4 +17,4 @@ model = DecisionTreeClassifier(random_state=random_state, min_samples_leaf=min_s
 model.fit(X_train, y_train)
 
 with open(os.path.join(MODEL_DIR, MODEL_NAME) + ".pickle", "wb") as file_:
-    pickle.dump(model, file_, -1)
+    pickle.dump(model, file_, protocol=2)
