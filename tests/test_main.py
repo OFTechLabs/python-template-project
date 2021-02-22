@@ -15,7 +15,8 @@ class TestMain(unittest.TestCase):
         pass
 
     def test_pickle_model(self):
-        self.path = os.path.join("..", "app", "model", "DecisionTreeClassifier.pickle")
+        self.file_path = os.path.dirname(__file__)
+        self.path = os.path.join(self.file_path, "..", "app", "model", "DecisionTreeClassifier.pickle")
         self.assertTrue(os.path.exists(self.path), f"the path ({self.path}) does not exist")
         self.assertTrue(os.path.isfile(self.path), f"the path ({self.path}) is not a file")
         self.f_open = open(self.path, "rb")

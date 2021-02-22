@@ -17,11 +17,13 @@ app = FastAPI(
 
 mimetypes.init()
 
-MODEL_DIR = os.path.join("app", "model")
+file_path = os.path.dirname(__file__)
+
+MODEL_DIR = os.path.join("model")
 MODEL_NAME = "DecisionTreeClassifier"
 
-path = os.path.join(os.getcwd(), MODEL_DIR, MODEL_NAME + ".pickle")
-path = r'C:\Users\jurj\Smartgit\python-template-project\app\model\DecisionTreeClassifier.pickle'
+path = os.path.join(file_path, MODEL_DIR, MODEL_NAME + ".pickle")
+
 model = pickle.load(open(path, "rb"))
 
 
