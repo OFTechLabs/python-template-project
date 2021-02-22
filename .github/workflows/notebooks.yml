@@ -1,8 +1,6 @@
 # Run all notebooks on every push
 name: Notebooks
-on:
-  push:
-    branches: [ master ]
+on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
