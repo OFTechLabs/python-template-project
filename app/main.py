@@ -1,12 +1,12 @@
 from typing import List, Optional, Dict
 import uvicorn
 import os
+import pickle
 
 from fastapi import FastAPI, Body
 from pydantic import BaseModel
 import mimetypes
 
-import pickle
 
 app = FastAPI(
     title="App deployment as a microservice",
@@ -17,8 +17,12 @@ app = FastAPI(
 
 mimetypes.init()
 
-MODEL_DIR = "app"
+MODEL_DIR = os.path.join("app", "model")
 MODEL_NAME = "DecisionTreeClassifier"
+
+path = os.path.join(os.getcwd(), MODEL_DIR, MODEL_NAME + ".pickle")
+path = r'C:\Users\jurj\Smartgit\python-template-project\app\model\DecisionTreeClassifier.pickle'
+model = pickle.load(open(path, "rb"))
 
 
 class Flower(BaseModel):
@@ -45,11 +49,6 @@ class Prediction(BaseModel):
 
 @app.post("/predict/", response_model=Prediction)
 def predict_model(flower: Flower) -> Prediction:
-    path = os.path.join(os.getcwd(), MODEL_DIR, MODEL_NAME + ".pickle")
-    print(path)
-    print("isfile", os.path.isfile(path))
-    f_open = open(path, "rb")
-    model = pickle.load(f_open)
     return Prediction(predicted_class=flower.predict_flower_class(model),
                       predicted_name=flower.predict_flower_name(model))
 
