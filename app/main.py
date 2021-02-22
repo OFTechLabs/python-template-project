@@ -26,6 +26,8 @@ path = os.path.join(file_path, MODEL_DIR, MODEL_NAME + ".pickle")
 
 model = pickle.load(open(path, "rb"))
 
+assert(1,3, "this is to test if the notebook runs")
+
 
 class Flower(BaseModel):
     flower_names = ["setosa", "versicolor", "virginica"]
