@@ -4,17 +4,32 @@ import pickle
 from sklearn.datasets import load_iris
 from sklearn.tree import DecisionTreeClassifier
 
-MODEL_DIR = os.path.dirname(__file__)
-MODEL_NAME = "DecisionTreeClassifier"
 
-data = load_iris()
-X_train = data.data
-y_train = data.target
-random_state = 0
-min_samples_leaf = 3
+class Model(DecisionTreeClassifier):
 
-model = DecisionTreeClassifier(random_state=random_state, min_samples_leaf=min_samples_leaf)
-model.fit(X_train, y_train)
+    def __init__(self, model_dir: str, model_name: str, data_loader):
+        super().__init__()
+        self.model_dir = model_dir
+        self.model_name = model_name
+        self.data_loader = data_loader
 
-with open(os.path.join(MODEL_DIR, MODEL_NAME) + ".pickle", "wb") as file_:
-    pickle.dump(model, file_, protocol=2)
+    def load_iris_data(self):
+        return self.data_loader()
+
+    def save(self):
+        with open(os.path.join(self.model_dir, self.model_name) + ".pickle", "wb") as file:
+            pickle.dump(self, file, protocol=2)
+
+
+model = Model(model_dir=os.path.dirname(__file__), model_name="DecisionTreeClassifier", data_loader=load_iris)
+
+data = model.load_iris_data()
+X = data.data
+y = data.target
+model.random_state = 0
+model.min_samples_leaf = 3
+
+model.fit(X, y)
+
+model.save()
+
