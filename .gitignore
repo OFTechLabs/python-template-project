@@ -137,3 +137,6 @@ docker-compose_aws.yml
 .idea/workspace.xml
 *.exe
 %USERPROFILE%/*
+
+# python pickle files
+.pickle
