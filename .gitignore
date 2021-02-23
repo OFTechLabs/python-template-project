@@ -139,4 +139,4 @@ docker-compose_aws.yml
 %USERPROFILE%/*
 
 # python pickle files
-.pickle
+*.pickle
