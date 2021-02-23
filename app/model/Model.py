@@ -13,7 +13,7 @@ class Model(DecisionTreeClassifier):
         self.model_name = model_name
         self.data_loader = data_loader
 
-    def load_iris_data(self):
+    def load_data(self):
         return self.data_loader()
 
     def save(self):
@@ -21,15 +21,17 @@ class Model(DecisionTreeClassifier):
             pickle.dump(self, file, protocol=2)
 
 
-model = Model(model_dir=os.path.dirname(__file__), model_name="DecisionTreeClassifier", data_loader=load_iris)
+if __name__ == "__main__":
+    model = Model(model_dir=os.path.dirname(__file__), model_name="DecisionTreeClassifier", data_loader=load_iris)
 
-data = model.load_iris_data()
-X = data.data
-y = data.target
-model.random_state = 0
-model.min_samples_leaf = 3
+    data = model.load_data()
 
-model.fit(X, y)
+    X = data.data
+    y = data.target
 
-model.save()
+    model.random_state = 0
+    model.min_samples_leaf = 3
+    model.fit(X, y)
+
+    model.save()
 

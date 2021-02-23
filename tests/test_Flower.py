@@ -1,6 +1,6 @@
 import unittest
 
-from app.main import Flower
+from app.model.Flower import Flower
 
 from sklearn.dummy import DummyClassifier
 
